@@ -2,6 +2,7 @@
 //sukurti kintamaji 'x' su bet kokia reiksme
  $x = 10;
 //isveskite rezultata komandos isset(x) ir isset(y)
+echo('<br>');
 echo isset($x);
 echo('<br>');
 echo isset($b);
