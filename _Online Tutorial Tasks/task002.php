@@ -4,6 +4,7 @@
     $age = 50;
    // sukurti string kintamaji su reikme 'mano amzius $age metu' ir isvesti ja i ekrana
     $myage ="mano amzius yra $age metu";
+    echo '<br>';
     echo $myage;
     echo '<br>';
     
