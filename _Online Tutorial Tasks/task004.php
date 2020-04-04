@@ -12,6 +12,6 @@ echo '<br>';
 //sukurti kintamaji 'c'. Sukurti kintamaji 'd' ir priskirti jam 'c' reiksme per simboline nuoroda
 $c = 100;
 $d = 'c';
-//isvesti 'd' echo pagalba naudojant simboline nuoroda
+//isvesti 'd' echo pagalba naudojant simboline nuoroda i 'c'
 echo "d="; echo $$d;
 ?>
