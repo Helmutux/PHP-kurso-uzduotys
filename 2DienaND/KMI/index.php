@@ -24,10 +24,10 @@
     </header>
     <main>
         <?php
-            if ($_SERVER["REQUEST_METHOD"] == "POST")
+            if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 $height = $_REQUEST['ugis'];   
-            if ($_SERVER["REQUEST_METHOD"] == "POST")
-                $weight = $_REQUEST['svoris'];   
+                $weight = $_REQUEST['svoris'];
+            }
         ?>
         <div id="div" class="col-lg-4 col-md-6 col-sm-12">
             <div>
