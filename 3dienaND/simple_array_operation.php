@@ -1,45 +1,54 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>body{
+    <style>
+    body {
         margin-left: 19%;
-        margin-right:19%;
+        margin-right: 19%;
         width: 60%;
         font-size: 24px;
         font-family: arial;
         display: inline-block;
-        }
-        h3{
-            background: blue;
-            color: white;
-            margin: auto;
-            margin-top: 0.5em;
-            padding: 0.5em;
-            text-align: center;
-            border-radius: 5px;
-        }
-        @media (max-width: 400px){
-            body{
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
+    h3 {
+        background: red;
+        margin: auto;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    @media (max-width: 400px) {
+        body {
             margin-left: 5%;
-            margin-right:5%;
+            margin-right: 5%;
             width: 88%;
 
-            }
-            img{
-                max-width: 300px;
-            }
-        </style>
+        }
+
+        img {
+            max-width: 300px;
+        }
+    </style>
     <title>Operacijos su masyvais</title>
 </head>
+
 <body>
-<?php
+    <?php
 // Uzduotis:
 // Pailiustruoti operacijas su masyvais naudojant vienmati masyva:
 
-echo "<h3>OPERACIJOS SU VIENMAČIAIS MASYVAIS</h3>";
+echo "<a href=\"index.php\" title=\"Grįžti į pradinį\"><h3>OPERACIJOS SU VIENMAČIAIS MASYVAIS</h3></a>";
 echo "<p><b>Vienmačio masyvo sukūrimas:</b></p>";
 $array = [3, 12, 7, 2, 19];
 echo ("\$array = [3, 12, 7, 2, 19];");//parodau ekrane panaudota koda
@@ -210,5 +219,5 @@ echo max($array);
 //  - *Daugiamačiu masyvu
 ?>
 </body>
-</html>
 
+</html>
