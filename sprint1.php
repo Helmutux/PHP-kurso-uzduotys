@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
     body {
-        font-family: courier;
+        font-family: arial;
 
     }
     h4{
@@ -27,30 +27,29 @@
     }
 
     .container {
-        margin-left: 25%;
-        margin-right: 25%;
+        margin-left: 15%;
+        margin-right: 15%;
     }
-    .katalog{
-        display: block;
-        border: 1px solid #B3B898;
-        width: 280px;
-        background: #FEF6AB;
-        color: #000619;
-        padding: 0.2em;
-        margin: 0;
-        margin-block-start: 0.2em;
-        margin-block-end: 0;
+    table {
+        border-collapse: collapse;
+        margin: auto;
     }
 
-    .files{
-        display: block;
-        border: 1px solid #B3B898;
-        width: 280px;
-        color: #000619;
-        padding: 0.2em;
-        margin: 0;
-        margin-block-start: 0.2em;
-        margin-block-end: 0;}
+    th,
+    td {
+        border: 1px solid darkgrey;
+        text-align: left;
+        font-size: 20px;
+        width: 400px;
+        height: 40px;
+        padding-left: 0.5em;
+    }
+    th{
+        background: green;
+        color: white;
+        font-weight: bold;
+    }
+    
     .task {
         font-size: 20px;
     }
@@ -76,33 +75,44 @@
         <h2>
         Sukurkite PHP failų naršyklę, kuri suteikia galimybę matyti failus ir/ar direktorijas.
         </h2>
-        <div class="task">
-        <h4>Pateikta direktorija 'C:\Program Files\Ampps\www\PHP-kurso-uzduotys'</h4>
         <hr>
-        <?php
-            //panaudojame $_SERVER['REQUEST_URI'];
-           echo "Dabar esame čia:<br>"; 
-           echo $_SERVER['REQUEST_URI'];
-           echo "<hr>";
+        <div class="task">
+        <h2>Directory contents: /Ampps/www/PHP-kurso-uzduotys'</h2>
+        <hr>
+        <table>
+            <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+            <?php
            //nurodome vieta(kataloga/direktorija), su kurios turiniu dirbsime 
-           $dir    = 'C:\Program Files\Ampps\www\PHP-kurso-uzduotys';
-           $turinys = scandir($dir);//panaudojame scandir, suformuojame string'u masyva (kiekvienas failas ar katalogas patampa atskiru masyvo elementu) 
+            $dir = 'C:\Program Files\Ampps\www\PHP-kurso-uzduotys';
+            $turinys = scandir($dir);//panaudojame scandir, suformuojame string'u masyva (kiekvienas failas ar katalogas patampa atskiru masyvo elementu) 
             
             echo "<br>";
-            //atspausdiname suformuoto masyvo elementus ir gauname pasirinktos vietos turini
+            //atspausdiname i lentele suformuoto masyvo elementus
             foreach($turinys as $k => $v){
+                echo "<tr>";
             //sukuriame salyga tikrindami ar elementas ne direktorija    
             if(is_dir($v)==true){
-                print_r('<p class="katalog">'.$v.'</p>');//teigiamu atveju spausdindami paryskiname
+                print_r('<td>Directory</td>');//teigiamu atveju nurodome apie tai celeje
+                print_r('<td>'.$v.'</td>');//teigiamu atveju spausdindami paryskiname
+                print_r('<td></td>');//kol kas pasiliekam tuscia, panaudosime veliau
             }
             //sukuriame salyga tikrindami ar elementas ne failas
             elseif(is_file($v)==true){
-                print_r('<p class="files">'.$v.'</p>');//teigiamu atveju spausdindami suteikiame italic stiliu
+                print_r('<td>File</td>');//teigiamu atveju nurodome apie tai celeje
+                print_r('<td>'.$v.'</td>');//teigiamu atveju spausdindami suteikiame italic stiliu
+                print_r('<td></td>');//kol kas pasiliekam tuscia, panaudosime veliau
             }
+            echo "</tr>";
             $i++;//padidinam indeksa ir kartojam cikla tikrindami sekanti elementa
             }
            
         ?>
+        </table>
+        
         <a href="#top"><b>Į puslapio viršų</b></a>
         </div>
 
