@@ -35,19 +35,23 @@
             margin-left: 5%;
             margin-right: 5%;
         }
+
+        img {
+            max-width: 300px;
+        }
     }
     </style>
     <title>Kableliai atvaizduojant masyvo elementus</title>
 </head>
 
 <body>
-    <a href="index.php"><b>Sugrįžti į pradinį</b></a>
+    <a href="index.php" id="top"><b>Sugrįžti į pradinį</b></a>
     <div class="container">
         <h1>1 užduotis</h1>
         <h2>Susikurti 2 masyvus: indeksinį ir asociatyvų.
             <br>
             Išvardinti (išvesti į ekraną) visus masyvo narius, atskiriant
-            juos kableliais (pvz: 1, 2, 3) taip, kad nebųtų
+            juos kableliais (pvz: 1, 2, 3) taip, kad nebūtų
             nereikalingų kablelių pradžioje (pvz: , 1, 2, 3) bei pabaigoje (pvz: 1, 2, 3, )
         </h2>
         <hr>
@@ -64,10 +68,9 @@
             echo "<br>";
             echo "<b>Spausdinu masyvo elementus pagal užduoties sąlygą:</b>";
             echo "<br>";
-            $x = count($array1);
-            $tmp = $x-1;
+
             for($i=0; $i<count($array1); $i++){
-                if($i<$tmp){
+                if($i<(count($array1))-1){
                 print_r($array1[$i]);
                 print(", ");
                 } 
@@ -77,7 +80,63 @@
                 print(".");
                 }
             }
+            echo "<br>";
+            echo "<br>";
+            //parodau vartotojui ekrane panaodota koda
+            echo "<b>Panaudotas kodas:</b>";
+            echo "<br>";
+            echo "<img src=\"img/index_array_print.jpg\" alt=\"Indeksinio masyvo išvedimo kodas\">";
+            echo "<hr>";
+
+            //susikuriu asociatyvu masyva
+            $car = array(
+            "tipas"=>"lengvasis",
+            "gamintojas"=>"ford",
+            "modelis"=>"mondeo",
+            "kėbulas"=>"sedanas",
+            "variklis"=>"EcoBoost",
+            "spalva"=>"raudona",
+            "pavarų_dėžė"=>"automatinė",
+            "pagaminta"=>"2012"
+            );
+            echo "<b>Sukurtas asociatyvus masyvas:</b>";
+            echo "<br>";
+            //isvedu masyvo sukurimo koda i ekrana
+            echo <<<EOT
+                \$car = array(<br>
+                "tipas"=>"lengvasis",<br>
+                "gamintojas"=>"ford",<br>
+                "modelis"=>"mondeo",<br>
+                "kėbulas"=>"sedanas",<br>
+                "variklis"=>"EcoBoost",<br>
+                "spalva"=>"raudona",<br>
+                "pavarų_dėžė"=>"automatinė",<br>
+                "pagaminta"=>"2012"<br>
+                );"
+                EOT;
+            echo "<br>";
+            echo "<br>";
+            echo "<b>Spausdinu masyvo elementus pagal užduoties sąlygą:</b>";
+            echo "<br>";
+            $i=0;
+            foreach($car as $k => $v){
+                if($i<count($car)-1){
+                print_r($k.'=>'.$v.', <br>');
+                }
+                else
+                {
+                print_r($k.'=>'.$v.'. <br>');
+                }
+                $i++;
+            }
+            //parodau vartotojui ekrane panaodota koda
+            echo "<b>Panaudotas kodas:</b>";
+            echo "<br>";
+            echo "<img src=\"img/ass_array_print.jpg\" alt=\"Asociatyvinio masyvo išvedimo kodas\">";
+            echo "<hr>";
+                        
         ?>
+        <a href="#top"><b>Į puslapio viršų</b></a>
         </div>
 
     </div>
