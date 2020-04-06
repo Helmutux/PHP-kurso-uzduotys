@@ -61,7 +61,7 @@
         }
     }
     </style>
-    <title>Kableliai atvaizduojant masyvo elementus</title>
+    <title>Daugybos lentelė</title>
 </head>
 
 <body>

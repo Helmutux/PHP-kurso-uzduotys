@@ -41,7 +41,7 @@
         }
     }
     </style>
-    <title>Kableliai atvaizduojant masyvo elementus</title>
+    <title>Kas antro elemento spausdinimas</title>
 </head>
 
 <body>

@@ -49,7 +49,7 @@
         <a href="task3.php">
             <h2>3.Daugybos lentelė</h2>
         </a>
-        <a href="task3.php">
+        <a href="../sprint1.php">
             <h2>4.PHP failų naršyklė</h2>
         </a>
     </div>
