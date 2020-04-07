@@ -51,7 +51,7 @@
                 pagrindinio užduoties failo (puslapio). </h2>
         </a>
         <a href="task2.php">
-            <h2>2.Parašykite savo sugalvotą funkciją su tipais (atskirame faile) ir ją panaudokite pagrindiniame užduotie faile(puslapyje).</h2>
+            <h2>2.Perdaryti 4 dienos užduotį su daugybos lentele panaudojant kitame faile laikomą susikurtą funkciją (savarankiškai susigalvota užduotis. )</h2>
         </a>
         <a href="../Sprint1/">
             <h2>3. Tęsti darbą kuriant PHP failų naršyklę. Sukurti galimybę sukurti naujas direktorijas bei ištrinti failus (direktorijų trinti nereikia)</h2>

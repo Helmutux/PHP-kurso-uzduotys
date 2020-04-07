@@ -41,7 +41,7 @@
         }
     }
     </style>
-    <title>Kableliai atvaizduojant masyvo elementus</title>
+    <title>Bubblesort funkcijos sukūrimas ir panaudojimas</title>
 </head>
 
 <body>

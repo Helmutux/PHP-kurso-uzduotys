@@ -53,7 +53,18 @@
     .task {
         font-size: 20px;
     }
-
+    input.create{
+        background: lightgreen;
+        border: 1px solid green;
+        color: darkgreen;
+        border-radius: 5px;
+    }
+    input.delete{
+        background: red;
+        border: 1px solid darkred;
+        color: white;
+        border-radius: 5px;
+    }
     @media (max-width: 400px) {
         .container {
             margin-left: 5%;
@@ -69,43 +80,42 @@
 </head>
 
 <body>
+    <div class="container">
      <?php
         //nurodome vieta(kataloga/direktorija), su kurios turiniu dirbsime 
         $path = './'.$_GET["path"];
         
-        $turinys = scandir($path);//panaudojame scandir, suformuojame string'u masyva (kiekvienas failas ar katalogas patampa atskiru masyvo elementu) 
+        //panaudojame scandir, suformuojame string'u masyva (kiekvienas failas ar katalogas patampa atskiru masyvo elementu) 
+        $turinys = scandir($path);
         
-        print_r($_SERVER['REQUEST_URI'].$turinys[3]);
-        
+        //isvedame i ekrana informacija, kurio katalogo turini vaizduojame
         print('<h2>Directory contents: '.str_replace('?path=','',$_SERVER['REQUEST_URI']).'</h2>');
     
         //pradedu lentele. Suvedu virsutine eilute (bus ne dinamiska)
         print('<table><tr><th>Type</th><th>Name</th><th>Actions</th></tr>');
-                    
-
+        
+        //issikvieciu dali kodo (reikalingas funkcijas) is kito failo
+        require 'function.php';
         //atspausdiname i lentele suformuoto masyvo elementus
         foreach($turinys as $value){
             if($value !=".." && $value !="."){
                 print ('<tr>');
 
-                print ('<td>'.(is_dir($path.$value) ? "Directory" : "File").'</td>');
+                print ('<td>'.(is_dir($path.$value) ? "Directory" : "File").'</td>');//pirmame stulpelyje nurodom ar tai direktorija ar failas
 
                 print ('<td>'.(is_dir($path.$value) ? '<a href="'.(isset($_GET['path'])
                                 ? $_SERVER['REQUEST_URI'].$value.'/' 
                                 : $_SERVER['REQUEST_URI'].'?path='.$value.'/').'">'.$value.'</a>'
                             :$value)
                         .'</td>');
-                print('<td></td>'); //kol kas pasiliekam tuscia, panaudosime veliau
-                print ('</tr>');
-                }
-                if($value ==".."){
-                print ('<tr>');
-                print('<td>back</td>');
-                print('<td><a href="../'.$_GET['path'].'">..</a></td>');
-                print('<td></td>');
+                print('<td><form action="function.php" method="GET">'.(is_dir($path.$value) ? '<input class="create" type="submit" class="button" name="create" value="create dir"/></form></td>'
+                            : '<input class="delete" type="submit" class="button" name="delete" value="delete file"/></form></td>').'</tr>');
+                
                 }
         }
         print('</table>');
     ?>
+    </div>
+    <button ></button>
 </body>
 </html>
