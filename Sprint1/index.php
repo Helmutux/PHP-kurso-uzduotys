@@ -25,7 +25,7 @@
         padding: 0.5em;
         border-radius: 5px;
     } */
-
+   
     .container {
         margin-left: 15%;
         margin-right: 15%;
@@ -69,60 +69,43 @@
 </head>
 
 <body>
-    <!-- <a href="4dienaND/index.php" id="top"><b>Sugrįžti į pradinį</b></a>
-    <div class="container"> -->
-        <!-- <h1>Sprintas No1</h1>
-        <h2>
-        Sukurkite PHP failų naršyklę, kuri suteikia galimybę matyti failus ir/ar direktorijas.
-        </h2>
-        <hr>
-        <div class="task"> -->
-        <?php
-            //nurodome vieta(kataloga/direktorija), su kurios turiniu dirbsime 
-            $path = './'.$_GET["path"];
-            
-            $turinys = scandir($path);//panaudojame scandir, suformuojame string'u masyva (kiekvienas failas ar katalogas patampa atskiru masyvo elementu) 
-            
-            print_r($_SERVER['REQUEST_URI'].$turinys[3]);
-            
-            print('<h2>Directory contents: '.str_replace('?path=','',$_SERVER['REQUEST_URI']).'</h2>');
+     <?php
+        //nurodome vieta(kataloga/direktorija), su kurios turiniu dirbsime 
+        $path = './'.$_GET["path"];
         
-            //pradedu lentele. Suvedu virsutine eilute (bus ne dinamiska)
-            print('<table><tr><th>Type</th><th>Name</th><th>Actions</th></tr>');
-                        
-
-            //atspausdiname i lentele suformuoto masyvo elementus
-            foreach($turinys as $value){
-                if($value !=".." && $value !="."){
-                    print ('<tr>');
-
-                    print ('<td>'.(is_dir($path.$value) ? "Directory" : "File").'</td>');
-
-                    print ('<td>'.(is_dir($path.$value) ? '<a href="'.(isset($_GET['path'])
-                                    ? $_SERVER['REQUEST_URI'].$value.'/' 
-                                    : $_SERVER['REQUEST_URI'].'?path='.$value.'/').'">'.$value.'</a>'
-                                :$value)
-                            .'</td>');
-                    print('<td></td>'); //kol kas pasiliekam tuscia, panaudosime veliau
-                    print ('</tr>');
-                    }
-                    if($value ==".."){
-                    print ('<tr>');
-                    print('<td>back</td>');
-                    print('<td><a href="../'.$_SERVER['REQUEST_URI'].$_GET['path'].'">..</a></td>');
-                    print('<td></td>');
-                    }
-            }
-            print('</table>');
-        ?>
+        $turinys = scandir($path);//panaudojame scandir, suformuojame string'u masyva (kiekvienas failas ar katalogas patampa atskiru masyvo elementu) 
         
+        print_r($_SERVER['REQUEST_URI'].$turinys[3]);
         
-        <!-- <a href="#top"><b>Į puslapio viršų</b></a> -->
-        <!-- </div>
+        print('<h2>Directory contents: '.str_replace('?path=','',$_SERVER['REQUEST_URI']).'</h2>');
+    
+        //pradedu lentele. Suvedu virsutine eilute (bus ne dinamiska)
+        print('<table><tr><th>Type</th><th>Name</th><th>Actions</th></tr>');
+                    
 
-    </div> -->
+        //atspausdiname i lentele suformuoto masyvo elementus
+        foreach($turinys as $value){
+            if($value !=".." && $value !="."){
+                print ('<tr>');
 
+                print ('<td>'.(is_dir($path.$value) ? "Directory" : "File").'</td>');
 
+                print ('<td>'.(is_dir($path.$value) ? '<a href="'.(isset($_GET['path'])
+                                ? $_SERVER['REQUEST_URI'].$value.'/' 
+                                : $_SERVER['REQUEST_URI'].'?path='.$value.'/').'">'.$value.'</a>'
+                            :$value)
+                        .'</td>');
+                print('<td></td>'); //kol kas pasiliekam tuscia, panaudosime veliau
+                print ('</tr>');
+                }
+                if($value ==".."){
+                print ('<tr>');
+                print('<td>back</td>');
+                print('<td><a href="../'.$_GET['path'].'">..</a></td>');
+                print('<td></td>');
+                }
+        }
+        print('</table>');
+    ?>
 </body>
-
 </html>
