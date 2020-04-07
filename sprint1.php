@@ -15,7 +15,7 @@
         background: silver;
         padding: 1em;
     }
-    a {
+    /* a {
         display: inline-block;
         margin: 0.5em 0 0.5em 1em;
         text-decoration: none;
@@ -24,7 +24,7 @@
         color: green;
         padding: 0.5em;
         border-radius: 5px;
-    }
+    } */
 
     .container {
         margin-left: 15%;
@@ -69,54 +69,55 @@
 </head>
 
 <body>
-    <a href="4dienaND/index.php" id="top"><b>Sugrįžti į pradinį</b></a>
-    <div class="container">
-        <h1>Sprintas No1</h1>
+    <!-- <a href="4dienaND/index.php" id="top"><b>Sugrįžti į pradinį</b></a>
+    <div class="container"> -->
+        <!-- <h1>Sprintas No1</h1>
         <h2>
         Sukurkite PHP failų naršyklę, kuri suteikia galimybę matyti failus ir/ar direktorijas.
         </h2>
         <hr>
-        <div class="task">
-        <h2>Directory contents: /Ampps/www/PHP-kurso-uzduotys'</h2>
-        <hr>
-        <table>
-            <tr>
-                <th>Type</th>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-            <?php
-           //nurodome vieta(kataloga/direktorija), su kurios turiniu dirbsime 
-            $dir = 'C:\Program Files\Ampps\www\PHP-kurso-uzduotys';
-            $turinys = scandir($dir);//panaudojame scandir, suformuojame string'u masyva (kiekvienas failas ar katalogas patampa atskiru masyvo elementu) 
+        <div class="task"> -->
+        <?php
+            //nurodome vieta(kataloga/direktorija), su kurios turiniu dirbsime 
+            $path = './'.$_GET["path"];
+            $turinys = scandir($path);//panaudojame scandir, suformuojame string'u masyva (kiekvienas failas ar katalogas patampa atskiru masyvo elementu) 
             
-            echo "<br>";
-            //atspausdiname i lentele suformuoto masyvo elementus
-            foreach($turinys as $k => $v){
-                echo "<tr>";
-            //sukuriame salyga tikrindami ar elementas ne direktorija    
-            if(is_dir($v)==true){
-                print_r('<td>Directory</td>');//teigiamu atveju nurodome apie tai celeje
-                print_r('<td>'.$v.'</td>');//teigiamu atveju spausdindami paryskiname
-                print_r('<td></td>');//kol kas pasiliekam tuscia, panaudosime veliau
-            }
-            //sukuriame salyga tikrindami ar elementas ne failas
-            elseif(is_file($v)==true){
-                print_r('<td>File</td>');//teigiamu atveju nurodome apie tai celeje
-                print_r('<td>'.$v.'</td>');//teigiamu atveju spausdindami suteikiame italic stiliu
-                print_r('<td></td>');//kol kas pasiliekam tuscia, panaudosime veliau
-            }
-            echo "</tr>";
-            $i++;//padidinam indeksa ir kartojam cikla tikrindami sekanti elementa
-            }
-           
-        ?>
-        </table>
+            print('<h2>Directory contents: '.str_replace('?path=','',$_SERVER['REQUEST_URI']).'</h2>');
         
-        <a href="#top"><b>Į puslapio viršų</b></a>
-        </div>
+            //pradedu lentele. Suvedu virsutine eilute (bus ne dinamiska)
+            print('<table><tr><th>Type</th><th>Name</th><th>Actions</th></tr>');
+                        
 
-    </div>
+            //atspausdiname i lentele suformuoto masyvo elementus
+            foreach($turinys as $value){
+                if($value !=".." && $value !="."){
+                    print ('<tr>');
+
+                    print ('<td>'.(is_dir($path.$value) ? "Directory" : "File").'</td>');
+
+                    print ('<td>'.(is_dir($path.$value) ? '<a href="'.(isset($_GET['path'])
+                                    ? $_SERVER['REQUEST_URI'].$value.'/' 
+                                    : $_SERVER['REQUEST_URI'].'?path='.$value.'/').'">'.$value.'</a>'
+                                :$value)
+                            .'</td>');
+                    print('<td></td>'); //kol kas pasiliekam tuscia, panaudosime veliau
+                    print ('</tr>');
+                    }
+                    if($value ==".."){
+                    print ('<tr>');
+                    print('<td>back</td>');
+                    print('<td><a href="../'.$_GET['path'].'">..</a></td>');
+                    print('<td></td>');
+                    }
+            }
+            print('</table>');
+        ?>
+        
+        
+        <!-- <a href="#top"><b>Į puslapio viršų</b></a> -->
+        <!-- </div>
+
+    </div> -->
 
 
 </body>
