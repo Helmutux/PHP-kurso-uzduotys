@@ -80,7 +80,10 @@
         <?php
             //nurodome vieta(kataloga/direktorija), su kurios turiniu dirbsime 
             $path = './'.$_GET["path"];
+            
             $turinys = scandir($path);//panaudojame scandir, suformuojame string'u masyva (kiekvienas failas ar katalogas patampa atskiru masyvo elementu) 
+            
+            print_r($_SERVER['REQUEST_URI'].$turinys[3]);
             
             print('<h2>Directory contents: '.str_replace('?path=','',$_SERVER['REQUEST_URI']).'</h2>');
         
@@ -106,7 +109,7 @@
                     if($value ==".."){
                     print ('<tr>');
                     print('<td>back</td>');
-                    print('<td><a href="../'.$_GET['path'].'">..</a></td>');
+                    print('<td><a href="../'.$_SERVER['REQUEST_URI'].$_GET['path'].'">..</a></td>');
                     print('<td></td>');
                     }
             }
