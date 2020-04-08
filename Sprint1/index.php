@@ -1,4 +1,27 @@
 <?php
+    session_start(); 
+
+    //login logic
+    $msg='';
+    if(isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])){
+        if($_POST['username'] == 'Donatas' && $_POST['password'] == '55555'){
+            $_SESSION['logged_in'] = true;
+            $_SESSION['username'] = 'Donatas';
+        } else {
+            $msg = 'Neteisingas prisijungimo vardas arba slaptažodis';
+        }
+    }
+
+
+    // logout logic
+    if(isset($_GET['action']) and $_GET['action'] == 'logout'){
+        session_start();
+        unset($_SESSION['username']);
+        unset($_SESSION['password']);
+        unset($_SESSION['logged_in']);
+        // print('Logged out!');
+    }
+
     //directory creation logic
     if(isset($_GET["create_dir"])){
         if($_GET["create_dir"] != ""){
@@ -19,8 +42,8 @@
             }
         }
     }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,6 +54,9 @@
     body {
         font-family: arial;
 
+    }
+    nav{
+        display: inline-block;
     }
     h4{
         display: inline-block;
@@ -80,6 +106,10 @@
         color: white;
         border-radius: 5px;
     }
+    button{
+        display: block;
+        width: 100%;
+    }
     @media (max-width: 400px) {
         .container {
             margin-left: 5%;
@@ -97,6 +127,19 @@
 <body>
     <div class="container">
      <?php
+        if(!$_SESSION['logged_in'] == true){
+            print('<form action = "" method="POST">');
+            print('<h4>'.$msg.'</h4>');
+            print('<input type="text" name="username" placeholder="Įveskite vartotojo vardą" required autofocus>');
+            print('<input type="password" name="password" placeholder="Įveskite slaptažodį" required>');
+            print('<button type="submit" name="login">Prisijungti</button>');
+            print('</form>');
+            die();
+        }
+
+
+
+
         //nurodome vieta(kataloga/direktorija), su kurios turiniu dirbsime 
         $path = './'.$_GET["path"];
         
@@ -109,8 +152,7 @@
         //pradedu lentele. Suvedu virsutine eilute (bus ne dinamiska)
         print('<table><tr><th>Type</th><th>Name</th><th>Actions</th></tr>');
         
-        //issikvieciu dali kodo (reikalingas funkcijas) is kito failo
-        require 'function.php';
+        
         //atspausdiname i lentele suformuoto masyvo elementus
         foreach($turinys as $value){
             if($value !=".." && $value !="."){
@@ -137,6 +179,26 @@
         }
         print('</table>');
     ?>
+    <br>
+    <br>
+    <nav>
+        <button>
+            <a href="<?php
+            $q_string = explode('/', rtrim($_SERVER['QUERY_STRING'], '/'));
+            array_pop($q_string);
+            count($q_string)==0
+            ? print('?path=/')
+            : print('?'.implode('/', $q_string).'/');
+            ?>">Grįžti atgal</a>
+        </button>
+        <br>
+        <form action="/Sprint1" method="get">
+            <input type="hidden" name="path" value="<?php print($_GET['path']) ?>" />
+            <input type="text" name="create_dir" id="create_dir" placeholder="Naujos direktorijos pavadinimas"/>
+            <button type="submit">Sukurti</button>
+        </form>
+        Norėdami išeiti spauskite<a href="index.php?action=logout"> čia
+    </nav>
     </div>
     <button ></button>
 </body>
