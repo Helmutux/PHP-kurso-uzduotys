@@ -38,17 +38,6 @@
         background: silver;
         padding: 1em;
     }
-    /* a {
-        display: inline-block;
-        margin: 0.5em 0 0.5em 1em;
-        text-decoration: none;
-        border: 1px solid green;
-        font-size: 18px;
-        color: green;
-        padding: 0.5em;
-        border-radius: 5px;
-    } */
-   
     .container {
         margin-left: 15%;
         margin-right: 15%;
