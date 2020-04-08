@@ -1,3 +1,26 @@
+<?php
+    //directory creation logic
+    if(isset($_GET["create_dir"])){
+        if($_GET["create_dir"] != ""){
+            $dir_to_create = './' . $_GET["path"] . $_GET["create_dir"];
+            if (!is_dir($dir_to_create)) mkdir($dir_to_create, 0777, true);
+        }
+        $url = preg_replace("/(&?|\??)create_dir=(.+)?/", "", $_SERVER["REQUEST_URI"]);
+        header('Location: ' . urldecode($url));
+    }
+
+    //directory deletion logic
+    if(isset($_POST['delete'])){
+        $objToDelete = './' . $_GET["path"] . $_POST['delete'];
+        $objToDeleteEscaped = str_replace("&nbsp;", " ", htmlentities($objToDelete, null, 'utf-8'));
+        if (is_file($objToDeleteEscaped)) {
+            if(file_exists($objToDeleteEscaped)){
+                unlink($objToDeleteEscaped);
+            }
+        }
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,6 +75,9 @@
     
     .task {
         font-size: 20px;
+    }
+    form{
+        display: inline-block;
     }
     input.create{
         background: lightgreen;
@@ -108,10 +134,17 @@
                                 : $_SERVER['REQUEST_URI'].'?path='.$value.'/').'">'.$value.'</a>'
                             :$value)
                         .'</td>');
-                print('<td><form action="function.php" method="GET">'.(is_dir($path.$value) ? '<input class="create" type="submit" class="button" name="create" value="create dir"/></form></td>'
-                            : '<input class="delete" type="submit" class="button" name="delete" value="delete file"/></form></td>').'</tr>');
-                
-                }
+                print('<td>'
+                    . (is_dir($path . $value)
+                    ? ''
+                    : '<form action="" method="POST">
+                       <input type="hidden" name="delete" value='.str_replace(' ', '&nbsp;', $value) . '>
+                       <input type="submit" value="Delete">
+                       </form>'
+                )
+                    . "</form></td>");
+                print ('</tr>');
+            }
         }
         print('</table>');
     ?>
