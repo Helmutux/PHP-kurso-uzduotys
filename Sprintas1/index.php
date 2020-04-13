@@ -5,7 +5,7 @@ Naudojant PHP sukurti failų naršyklę. Reikalavimai jai:
 2. Galimybė vaikščioti po katalogus bei matyti jų turinį. //done
 3. Galimybė sukurti naujas direktorijas. //done
 4. Galimybė ištrinti failus (direktorijų trinti nereikia). //done
-5. Galimybė įkelti failus.
+5. Galimybė įkelti failus. //done
 6. Aplikacija yra apsaugota autentikacijos mechanizmu (reikia prisijungti). //done
 7. Galimybė parsisiųsti failus. 
 -->
@@ -64,29 +64,56 @@ Naudojant PHP sukurti failų naršyklę. Reikalavimai jai:
         }
     }
 
-    // bylos ikelimo i atverta kataloga algoritmas;
-    if(isset($_FILES['byla'])){
-        $errors= array();
-        $file_name = $_FILES['byla']['name'];
-        $file_size = $_FILES['byla']['size'];
-        $file_tmp = $_FILES['byla']['tmp_name'];
-        $file_type = $_FILES['byla']['type'];
     
-        $file_ext = strtolower(end(explode('.',$_FILES['byla']['name'])));
-        $extensions = array("jpeg","jpg","png","xlsx", "xls", "pdf","txt", "docx", "doc", "gif", "rtf", "html", "css", "php", "ini");
-        if(in_array($file_ext,$extensions)=== false){
-            $errors[]="extension not allowed, please choose correct file.";
-        }
-        if($file_size > 2097152) {
-            $errors[]='File size must be under 2 MB';
-        }
-        if(empty($errors)==true) {
-            move_uploaded_file($file_tmp,"./".$file_name);
-            echo "Success";
-        }else{
-            print_r($errors);
-        }
+?>
+<?php
+// bylos ikelimo i atverta kataloga algoritmas;
+$message = ''; 
+if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Įkelti')
+{
+  if (isset($_FILES['uploadedFile']) && $_FILES['uploadedFile']['error'] === UPLOAD_ERR_OK)
+  {
+    // gauname informacija apie ikeliama byla
+    $fileTmpPath = $_FILES['uploadedFile']['tmp_name'];
+    $fileName = $_FILES['uploadedFile']['name'];
+    $fileSize = $_FILES['uploadedFile']['size'];
+    $fileType = $_FILES['uploadedFile']['type'];
+    $fileNameCmps = explode(".", $fileName);
+    $fileExtension = strtolower(end($fileNameCmps));
+
+    // sia komanda galime pervardyti (panaudojant md5) faila, noredami isvengti tarpu ir specsimboliu panaudojimo pavadinime. as nusprndziau jos nenaudoti
+    // $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+
+    // nurodome, kokius failus sistema leis (uzkrauti priimti)
+    $allowedfileExtensions = array('jpg', 'gif', 'png', 'zip', 'txt', 'xls', 'doc', 'rar', 'xlsx', 'docx', 'ppt', 'rtf', 'pdf');
+
+    if (in_array($fileExtension, $allowedfileExtensions))
+    {
+      // aprasome kelia i kataloga, kuriame issaugosime uzkrauta byla
+      $uploadFileDir = './' . $_GET["path"] ;
+      $dest_path = $uploadFileDir . $fileName;
+
+      if(move_uploaded_file($fileTmpPath, $dest_path)) 
+      {
+        $message ='Byla sėkmingai užkrauta.';
+      }
+      else 
+      {
+        $message = 'Klaida užkraunant bylą. Patikrinkite, ar įkrovos katalogas serveryje leidžia įrašyti siunčiamą bylą.';
+      }
     }
+    else
+    {
+      $message = 'Atsiuntimas negalimas. Leidžiamos tik šių tipų bylos: ' . implode(',', $allowedfileExtensions);
+    }
+  }
+  else
+  {
+    $message = 'There is some error in the file upload. Please check the following error.<br>';
+    $message .= 'Error:' . $_FILES['uploadedFile']['error'];
+  }
+}
+$_SESSION['message'] = $message;
 ?>
 
 <!-- jei autorizacija nesekminga, apsirasom veiksmus klaidos atveju -->
@@ -171,6 +198,15 @@ Naudojant PHP sukurti failų naršyklę. Reikalavimai jai:
         color: darkgreen;
         border: 1px solid darkgreen;
     }
+    .kelti{
+        height: 30px;
+    }
+    .message{
+        margin-top: 0.5em;
+        font-family: courier;
+        font-size: 12px;
+        font-weight: normal;
+    }
     .directfield{
         display: inline-block;
         border: 1px solid darkgreen;
@@ -252,30 +288,37 @@ Naudojant PHP sukurti failų naršyklę. Reikalavimai jai:
     <nav>
        
         <!-- apsirasome naujos direktorijos kurimo forma. algoritma susikuriame php kodo pagalba auksciau -->
-        <p>Galite sukurti naują katalogą matomoje srityje:</p>
+        <p><b>Galite sukurti naują katalogą matomoje srityje: </b></p>
         <form action="./" method="get">
             <input type="hidden" name="path" value="<?php print($_GET['path']) ?>" />
             <input class="directfield" type="text" name="create_dir" id="create_dir" placeholder="Naujos direktorijos pavadinimas"/>
             <input class="kurti" type="submit" value="Sukurti">
         </form>
+       
+        <!-- apsirasome failo pridejimo i kataloga forma -->
+       
+        <p><b>Galite įkelti naują bylą į šį katalogą: </b></p>
+        
+        <div>
+            <form method="POST" action="" enctype="multipart/form-data">
+                <div>
+                    <input class="kelti" type="file" name="uploadedFile" />
+                </div>
+                <div>
+                    <input class="kelti" type="submit" name="uploadBtn" value="Įkelti" />
+                </div>
+            </form>
+        </div>
+        <div class="message">
+            <?php if (isset($_SESSION['message']) && $_SESSION['message']) {
+                printf('<b>%s</b>', $_SESSION['message']);
+                unset($_SESSION['message']);
+                }
+            ?>
+        </div>
         <p>
             <a class="logout" href="index.php?f=logout">Palikti katalogą</a>
         </p>
-        <!-- apsirasome failo pridejimo i kataloga forma -->
-        <div>
-            <p>Galite pridėti failą į matomą katalogą:</p>
-            <form action = "./" method = "POST" enctype = "multipart/form-data">
-                <input type = "file" name = "byla" />
-                <input type = "submit"/>
-            </form>
-            <?php if(isset($_FILES['byla']) == true) {?>
-                <ul>
-                    <li>Sent file: <?php echo $_FILES['byla']['name']; ?>
-                    <li>File size: <?php echo $_FILES['byla']['size']; ?>
-                    <li>File type: <?php echo $_FILES['byla']['type'] ?>
-                </ul>
-            <?php } ?>
-        </div>
     </nav>
   
 </body>
