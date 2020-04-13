@@ -115,9 +115,30 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Įkelti')
 }
 $_SESSION['message'] = $message;
 ?>
+<?php
+    // bylų parsisiuntimo algoritmas
+    if(isset($_POST['download'])){
+        print('Path to download: ' . './' . $_GET["path"] . $_POST['download']);
+        $file='./' . $_GET["path"] . $_POST['download'];
+        $fileToDownloadEscaped = str_replace("&nbsp;", " ", htmlentities($file, null, 'utf-8'));
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/pdf'); // mime type → ši forma turėtų veikti daugumai failų, su šiuo mime type. Jei neveiktų reiktų daryti sudėtingesnę logiką
+        header('Content-Disposition: attachment; filename=' . basename($fileToDownloadEscaped));
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($fileToDownloadEscaped)); // kiek baitų browseriui laukti, jei 0 - failas neveiks nors bus sukurtas
+
+        flush();
+        readfile($fileToDownloadEscaped);
+        exit;
+    }
+?>
 
 <!-- jei autorizacija nesekminga, apsirasom veiksmus klaidos atveju -->
-<?php if($error) { ?> <p style="margin-left:30%;">Neteisingas prisijungimo vardas ir/arba slaptazodis</p> <?php } ?>
+<?php if($error) { ?> <p style="margin-left:30%;">Neteisingas prisijungimo vardas ir/arba slaptažodis</p> <?php } ?>
 
 <!-- jei autorizacija pavyko atidarome turini, skirta registruotiems vartotojams -->
 <?php if($auth) { ?>
@@ -125,7 +146,6 @@ $_SESSION['message'] = $message;
 <!-- atidarome pagrindini puslapi su html struktura -->
 <!DOCTYPE html>
 <html lang="lt">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -189,9 +209,18 @@ $_SESSION['message'] = $message;
     .delete{
         background: pink;
         color: black;
-        padding: 0.5em;
+        padding: 0.3em;
         border: 1px solid darkred;
         border-radius: 3px;
+        margin: 0.5em;
+    }
+    .download{
+        background: lightblue;
+        color: black;
+        padding: 0.3em;
+        border: 1px solid darkblue;
+        border-radius: 3px;
+        margin: 0.5em;
     }
     .kurti{
         background: lightgreen;
@@ -272,10 +301,15 @@ $_SESSION['message'] = $message;
                 print('<td>'//pridedame trynimo mygtuka
                     . (is_dir($path . $value)//klausiame ar tai direktorija
                     ? ''//jei true, nieko nepridedame
-                        //jei false, vadinas susiduriame su failu ir formuojame trynimo mygtuka: 
+                        //jei false, vadinas susiduriame su failu ir formuojame trynimo ir parsisiuntimo mygtukus: 
                     : '<form action="" method="POST">
                        <input type="hidden" name="delete" value='.str_replace(' ', '&nbsp;', $value) . '>
                        <input class="delete" type="submit" value="Delete">
+                       </form>
+                       
+                       <form action="" method="POST">
+                       <input type="hidden" name="download" value='.str_replace(' ', '&nbsp;', $value) . '>
+                       <input class="download" type="submit" value="Download">
                        </form>'
                 )
                     . "</form></td>");
@@ -316,6 +350,7 @@ $_SESSION['message'] = $message;
                 }
             ?>
         </div>
+        <hr>
         <p>
             <a class="logout" href="index.php?f=logout">Palikti katalogą</a>
         </p>
